@@ -3,7 +3,7 @@ function getClickHandler(info, tab) {
 };
 
 chrome.contextMenus.create({
-  "title" : "change to 'bar'",
+  "title" : "Convert from Zhuyin",
   "type" : "normal",
   "contexts" : ["editable"],
   "onclick" : getClickHandler
