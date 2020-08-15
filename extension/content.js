@@ -180,13 +180,11 @@ chrome.runtime.onMessage.addListener(function (request) {
 });
 
 function replaceSelectedText(elem) {
-	console.log(elem);
     var start = elem.selectionStart;
     var end = elem.selectionEnd;
 
     if(typeof elem.value === 'string'){
 		var select_text = elem.value.substr(start, end - start);
-		console.log(selected);
 
         // Wait for promise's result here instead of in the function
 		var promise = convert(select_text);

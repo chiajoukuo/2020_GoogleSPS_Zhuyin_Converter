@@ -1,5 +1,5 @@
 function getClickHandler(info, tab) {
-    chrome.tabs.sendMessage(tab.id, {text: "bar"});
+    chrome.tabs.sendMessage(tab.id, "");
 };
 
 chrome.contextMenus.create({
