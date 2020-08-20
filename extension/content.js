@@ -165,14 +165,14 @@ function convertFromZhuyinToPinyin(zhuyin_text){
     return ret_val;
 }
 
+function fetch_callback(data){
+	console.log(data);
+}
 
 function convert(zhuyin){
     const pinyin_text = convertFromZhuyinToPinyin(zhuyin);
-    console.log(pinyin_text);
 
-    var url = "https://www.google.com/inputtools/request?text=" + pinyin_text + "&ime=zh-hant-t-i0-pinyin&";
-
-    return fetch(url);
+	return pinyin_text;
 }
 
 chrome.runtime.onMessage.addListener(function (request) {
@@ -186,19 +186,19 @@ function replaceSelectedText(elem) {
     if(typeof elem.value === 'string'){
 		var select_text = elem.value.substr(start, end - start);
 
-        // Wait for promise's result here instead of in the function
-		var promise = convert(select_text);
-		console.log(promise);
+		var pinyin_text = convert(select_text);
 
-        promise.then(response => response.json()).then((result) => {
-	        console.log(result);
-	        if(result[0] == "SUCCESS"){
-	            var hant_text = result[1][0][1][0];     // translated text in traditional chinese
-	            console.log(hant_text);
-	            elem.value = elem.value.slice(0, start) + hant_text + elem.value.substr(end);   // replace the text
-	        }	
-		
-    	})
+        $.ajax({
+            url: 'https://www.google.com/inputtools/request?text=' + encodeURIComponent(pinyin_text) + '&ime=zh-hant-t-i0-pinyin&cb=?',
+            dataType: 'json',
+            success: function(data){
+                if(data[0] == "SUCCESS"){
+                    var hant_text = data[1][0][1][0];     // translated text in traditional chinese
+                    console.log(hant_text);
+                    elem.value = elem.value.slice(0, start) + hant_text + elem.value.substr(end);   // replace the text
+                }    
+            }
+        });
     }
 }
 
