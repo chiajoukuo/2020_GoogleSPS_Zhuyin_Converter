@@ -106,7 +106,34 @@ function init_global_var(){
                                                     // ㄩㄦ not exists
 }
 
+function rearrange(zhuyin){
+    var ret = "";
+    // find last consonant
+    for(var index = zhuyin.length - 1; index >= 0; index --){
+        if(consonantsMap.get(zhuyin[index])){
+            ret += zhuyin[index];
+            break;
+        }
+    }
+    // find last medial
+    for(var index = zhuyin.length - 1; index >= 0; index --){
+        if(zhuyin[index] === 'u' || zhuyin[index] === 'j' || zhuyin[index] === 'm' ){
+            ret += zhuyin[index];
+            break;
+        }
+    }
+    // find last rhyme
+    for(var index = zhuyin.length - 1; index >= 0; index --){
+        if(rhymes_medials_map.get(zhuyin[index]) && zhuyin[index] !== 'u' && zhuyin[index] !== 'j' && zhuyin[index] != 'm'){
+            ret += zhuyin[index];
+            break;
+        }
+    }
+    return ret;
+}
+
 function convertAWordFromZhuyinToPingyin(zhuyin){
+    zhuyin = rearrange(zhuyin);
     var retval = "";
     
     if(zhuyin == "") return "";
