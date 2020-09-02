@@ -1,4 +1,31 @@
+function rearrange(zhuyin){
+    var ret = "";
+    // find last consonant
+    for(var index = zhuyin.length - 1; index >= 0; index --){
+        if(consonantsMap.get(zhuyin[index])){
+            ret += zhuyin[index];
+            break;
+        }
+    }
+    // find last medial
+    for(var index = zhuyin.length - 1; index >= 0; index --){
+        if(zhuyin[index] === 'u' || zhuyin[index] === 'j' || zhuyin[index] === 'm' ){
+            ret += zhuyin[index];
+            break;
+        }
+    }
+    // find last rhyme
+    for(var index = zhuyin.length - 1; index >= 0; index --){
+        if(rhymes_medials_map.get(zhuyin[index]) && zhuyin[index] !== 'u' && zhuyin[index] !== 'j' && zhuyin[index] != 'm'){
+            ret += zhuyin[index];
+            break;
+        }
+    }
+    return ret;
+}
+
 function convertAWordFromZhuyinToPingyin(zhuyin){
+    zhuyin = rearrange(zhuyin);
     var retval = "";
     
     if(zhuyin == "") return "";
@@ -82,12 +109,31 @@ function callRequest(zhuyin){
 }
 
 
-function verify(){
+function verify(text){
 	/*
 		TODO : Verify if the text are perhaps in wrong input.
 	 */
-	 
-	return true;
+  var has_at_least_one_tonal = false;
+	var counter = 0;
+    for (let each_char of text){
+    	if(tonal_list.indexOf(each_char) == -1){
+        if(counter > 4){
+          return false
+        }
+    		counter ++;
+    	}
+    	else{
+    		if(counter <= 4){
+    			counter = 0;
+          has_at_least_one_tonal = true;
+    		}
+    		else{
+    			return false;
+    		}
+    	}
+    }
+
+	return has_at_least_one_tonal;
 }
 
 
@@ -162,6 +208,9 @@ function updateValue(e) {
 			// Hide it if mouse leaves the input
 			document.getElementById('zhuyin').style.display = 'none';
 		}
+  	}
+  	else{
+  		e.target.style.cssText = "";
   	}
 }
 
