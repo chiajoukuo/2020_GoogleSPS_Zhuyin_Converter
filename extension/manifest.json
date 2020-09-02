@@ -19,5 +19,14 @@
 
     }
   ],
-  "browser_action": {}
+  "browser_action": {},
+  "commands": {  
+      "convert":{  
+          "suggested_key":{
+              "default": "Ctrl+Shift+Y",
+               "mac": "MacCtrl+Shift+Y"  
+          },
+          "description": "hotkey"  
+      }  
+  }
 }
