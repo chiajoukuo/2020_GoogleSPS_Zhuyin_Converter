@@ -28,6 +28,6 @@
 
 ## Demo
 
-{%youtube ts331OzfpfM %}
+https://www.youtube.com/watch?v=ts331OzfpfM&feature=emb_title
 
 
